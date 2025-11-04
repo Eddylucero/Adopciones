@@ -29,7 +29,18 @@ class PersonaController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $datos = $request->validate([
+            'nombre' => 'required|string|max:255',
+            'apellido' => 'required|string|max:255',
+            'cedula' => 'required|string|max:10|unique:personas,cedula',
+            'direccion' => 'nullable|string|max:255',
+            'telefono' => 'nullable|string|max:20',
+            'correo' => 'nullable|email|max:255',
+        ]);
+
+        Persona::create($datos);
+
+        return redirect()->route('personas.index')->with('success', 'Persona registrada correctamente.');
     }
 
     /**
