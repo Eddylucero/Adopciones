@@ -9,7 +9,7 @@
       <div class="col-md-12 col-lg-6 half p-3 py-5 pl-lg-5 ftco-animate">
         <div class="bg-light p-4 rounded shadow" style="background-color: rgba(255, 255, 255, 0.85); backdrop-filter: blur(6px); border-radius: 16px;">
           <h2 class="mb-4 text-center text-dark">
-            <span class="fa fa-paw text-warning mr-2"></span> Registrar Nueva Mascota
+            <span class="text-warning mr-2"></span> Registrar Nueva Mascota
           </h2>
 
           <form action="{{ route('mascotas.store') }}" id="FormMascota" method="post" enctype="multipart/form-data">

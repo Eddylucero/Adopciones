@@ -62,24 +62,56 @@ class MascotaController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Mascota $mascota)
+    public function edit(string $id)
     {
-        //
+        $mascota = Mascota::findOrFail($id);
+        return view('mascotas.editarmascota', compact('mascota'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Mascota $mascota)
+    public function update(Request $request, string $id)
     {
-        //
+        $mascota = Mascota::findOrFail($id);
+
+        $datos = $request->validate([
+            'nombre' => 'required|string|max:255',
+            'especie' => 'required|string|max:255',
+            'raza' => 'nullable|string|max:255',
+            'edad' => 'nullable|integer|min:0|max:25',
+            'sexo' => 'nullable|string|max:50',
+            'descripcion' => 'nullable|string',
+            'estado' => 'required|string|max:50',
+            'foto' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+        ]);
+
+        if ($request->hasFile('foto')) {
+            if ($mascota->foto && file_exists(public_path($mascota->foto))) {
+                unlink(public_path($mascota->foto));
+            }
+
+            $nombreArchivo = time() . '_' . $request->file('foto')->getClientOriginalName();
+            $request->file('foto')->move(public_path('imagen/'), $nombreArchivo);
+            $datos['foto'] = 'imagen/' . $nombreArchivo;
+        }
+
+        $mascota->update($datos);
+        return redirect()->route('mascotas.index')->with('success', 'Mascota actualizada correctamente.');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Mascota $mascota)
+    public function destroy(string $id)
     {
-        //
+        $mascota = Mascota::findOrFail($id);
+
+        if ($mascota->foto && file_exists(public_path($mascota->foto))) {
+            unlink(public_path($mascota->foto));
+        }
+
+        $mascota->delete();
+        return redirect()->route('mascotas.index')->with('success', 'Mascota eliminada correctamente.');
     }
 }
