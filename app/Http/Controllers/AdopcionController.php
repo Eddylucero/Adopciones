@@ -76,7 +76,6 @@ class AdopcionController extends Controller
         ]);
 
         if ($request->hasFile('contrato')) {
-            // Eliminar contrato anterior
             if ($adopcion->contrato && file_exists(public_path($adopcion->contrato))) {
                 unlink(public_path($adopcion->contrato));
             }
@@ -96,12 +95,10 @@ class AdopcionController extends Controller
     {
         $adopcion = Adopcion::findOrFail($id);
 
-        // Eliminar PDF si existe
         if ($adopcion->contrato && file_exists(public_path($adopcion->contrato))) {
             unlink(public_path($adopcion->contrato));
         }
 
-        // Volver a disponible la mascota
         if ($adopcion->mascota) {
             $adopcion->mascota->update(['estado' => 'Disponible']);
         }
