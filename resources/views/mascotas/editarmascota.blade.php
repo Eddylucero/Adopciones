@@ -1,13 +1,12 @@
-@extends('layout.app')
+@extends('layout.admin')
 
 @section('content')
 
-<section class="ftco-appointment ftco-section ftco-no-pt ftco-no-pb img" style="background-image: url('{{ asset('pets/images/bg_3.jpg') }}');">
-  <div class="overlay"></div>
+<section class="ftco-section d-flex align-items-center justify-content-center" style="min-height: 100vh; background-color: #f8f9fa;">
   <div class="container">
-    <div class="row d-md-flex justify-content-end">
-      <div class="col-md-12 col-lg-6 half p-3 py-5 pl-lg-5 ftco-animate">
-        <div class="bg-light p-4 rounded shadow" style="background-color: rgba(255, 255, 255, 0.85); backdrop-filter: blur(6px); border-radius: 16px;">
+    <div class="row justify-content-center">
+      <div class="col-md-10 col-lg-8 p-3 py-5 ftco-animate">
+        <div class="bg-light p-4 rounded shadow" style="background-color: rgba(255, 255, 255, 0.95); border-radius: 16px;">
           <h2 class="mb-4 text-center text-dark">
             <span class="text-warning mr-2"></span> Editar Mascota
           </h2>
@@ -64,6 +63,7 @@
                   </select>
                 </div>
               </div>
+
               <div class="col-md-6">
                 <div class="form-group">
                   <label><b>Estado:</b></label>
@@ -71,7 +71,6 @@
                     <option value="Disponible" {{ $mascota->estado == 'Disponible' ? 'selected' : '' }}>Disponible</option>
                     <option value="Adoptado" {{ $mascota->estado == 'Adoptado' ? 'selected' : '' }}>Adoptado</option>
                   </select>
-                  {{-- Campo oculto para mantener el valor del estado --}}
                   <input type="hidden" name="estado" value="{{ $mascota->estado }}">
                 </div>
               </div>
@@ -97,10 +96,10 @@
               </div>
 
               <div class="col-md-12 text-center mt-4">
-                <a href="{{ route('mascotas.index') }}" class="btn btn-outline-danger me-3 rounded-pill">
+                <a href="{{ route('mascotas.index') }}" class="btn btn-outline-danger me-3 rounded">
                   <i class="fa fa-times"></i> Cancelar
                 </a>
-                <button type="submit" class="btn btn-outline-primary rounded-pill">
+                <button type="submit" class="btn btn-outline-primary rounded">
                   <i class="fa fa-save"></i> Actualizar Mascota
                 </button>
               </div>
@@ -139,7 +138,7 @@ $("#FormMascotaEdit").validate({
     },
     especie: { required: true },
     sexo: { required: true },
-    edad: { number: true, min: 0, max: 10 },
+    edad: { number: true, min: 1, max: 10 },
     foto: { extension: "jpg|jpeg|png|gif" }
   },
   messages: {
@@ -153,7 +152,7 @@ $("#FormMascotaEdit").validate({
     sexo: { required: "Debe seleccionar un sexo" },
     edad: {
       number: "Ingrese un valor numérico válido",
-      min: "La edad no puede ser negativa",
+      min: "La edad no puede ser menor a 1",
       max: "La edad máxima permitida es 10 años"
     },
     foto: {

@@ -1,15 +1,14 @@
-@extends('layout.app')
+@extends('layout.admin')
 
 @section('content')
 
-<section class="ftco-appointment ftco-section ftco-no-pt ftco-no-pb img" style="background-image: url('{{ asset('pets/images/bg_3.jpg') }}');">
-  <div class="overlay"></div>
+<section class="ftco-section d-flex align-items-center justify-content-center" style="min-height: 100vh; background-color: #f8f9fa;">
   <div class="container">
-    <div class="row d-md-flex justify-content-end">
-      <div class="col-md-12 col-lg-6 half p-3 py-5 pl-lg-5 ftco-animate">
-        <div class="bg-light p-4 rounded shadow" style="background-color: rgba(255, 255, 255, 0.85); backdrop-filter: blur(6px); border-radius: 16px;">
+    <div class="row justify-content-center">
+      <div class="col-md-10 col-lg-8 p-3 py-5 ftco-animate">
+        <div class="bg-light p-4 rounded shadow" style="background-color: rgba(255, 255, 255, 0.95); border-radius: 16px;">
           <h2 class="mb-4 text-center text-dark">
-            <span class="text-warning mr-2"></span> Registrar Nueva Persona
+            <span class="text-warning me-2"></span> Registrar Nueva Persona
           </h2>
 
           <form action="{{ route('personas.store') }}" id="FormPersona" method="post">
@@ -59,10 +58,10 @@
               </div>
 
               <div class="col-md-12 text-center mt-4">
-                <a href="{{ route('personas.index') }}" class="btn btn-outline-danger me-3 rounded-pill">
+                <a href="{{ route('personas.index') }}" class="btn btn-outline-danger me-3 rounded">
                   <i class="fa fa-times"></i> Cancelar
                 </a>
-                <button type="submit" class="btn btn-outline-success rounded-pill">
+                <button type="submit" class="btn btn-outline-success rounded">
                   <i class="fa fa-save"></i> Guardar Persona
                 </button>
               </div>
