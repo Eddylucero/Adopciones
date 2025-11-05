@@ -16,6 +16,11 @@ class PersonaController extends Controller
         return view('personas.index', compact('personas'));
     }
 
+    public function nuevovisi() 
+    {
+        return view('personas.nuevovisi');
+    }
+
     /**
      * Show the form for creating a new resource.
      */
@@ -39,8 +44,13 @@ class PersonaController extends Controller
         ]);
 
         Persona::create($datos);
-
-        return redirect()->route('personas.index')->with('success', 'Persona registrada correctamente.');
+        if ($request->input('origen') === 'visitante') {
+            return redirect('/')
+                ->with('success', '¡Gracias por registrarte! Tu información fue enviada correctamente.');
+        }
+        return redirect()
+            ->route('personas.index')
+            ->with('success', 'Persona registrada correctamente.');
     }
 
     /**
