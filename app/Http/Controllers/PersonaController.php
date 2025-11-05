@@ -80,9 +80,17 @@ class PersonaController extends Controller
      */
     public function destroy(Persona $persona)
     {
-        $persona = Persona::findOrFail($id);
+        // Revisar si esta persona tiene adopciones
+        if ($persona->adopcions()->count() > 0) {
+            // No se puede borrar
+            return redirect()->route('personas.index')
+                ->with('error', 'No se puede eliminar la persona porque tiene adopciones registradas.');
+        }
+
         $persona->delete();
 
-        return redirect()->route('personas.index')->with('success', 'Persona eliminada correctamente.');
+        return redirect()->route('personas.index')
+            ->with('success', 'Persona eliminada correctamente.');
     }
+
 }

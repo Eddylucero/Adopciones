@@ -1,0 +1,153 @@
+@extends('layout.admin')
+
+@section('content')
+<section class="ftco-section d-flex align-items-center justify-content-center" style="min-height: 100vh;">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-md-10 col-lg-8 p-3 py-5">
+        <div class="bg-light p-4 rounded shadow">
+          <h2 class="mb-4 text-center text-dark">Editar Adopción</h2>
+
+          <form action="{{ route('adopciones.update', $adopcion->id) }}" id="FormAdopcionEdit" method="POST" enctype="multipart/form-data">
+            @csrf
+            @method('PUT')
+
+            <div class="row">
+
+              <div class="col-md-6">
+                <label><b>Fecha de adopción:</b></label>
+                <input type="date" name="fecha_adopcion" class="form-control rounded" value="{{ $adopcion->fecha_adopcion }}" required>
+              </div>
+
+              <div class="col-md-6">
+                <label><b>Lugar de adopción:</b></label>
+                <input type="text" name="lugar_adopcion" class="form-control rounded" value="{{ $adopcion->lugar_adopcion }}" required>
+              </div>
+
+              <div class="col-md-6">
+                <label><b>Mascota:</b></label>
+                <select name="mascota_id" class="form-control rounded" required>
+                  @foreach($mascotas as $mascota)
+                    <option value="{{ $mascota->id }}" {{ $adopcion->mascota_id == $mascota->id ? 'selected' : '' }}>
+                      {{ $mascota->nombre }}
+                    </option>
+                  @endforeach
+                </select>
+              </div>
+
+              <div class="col-md-6">
+                <label><b>Persona:</b></label>
+                <select name="persona_id" class="form-control rounded" required>
+                  @foreach($personas as $persona)
+                    <option value="{{ $persona->id }}" {{ $adopcion->persona_id == $persona->id ? 'selected' : '' }}>
+                      {{ $persona->nombre }} {{ $persona->apellido }}
+                    </option>
+                  @endforeach
+                </select>
+              </div>
+
+              <div class="col-md-12">
+                <label><b>Observaciones:</b></label>
+                <textarea name="observaciones" class="form-control rounded" rows="4">{{ $adopcion->observaciones }}</textarea>
+              </div>
+
+              <div class="col-md-12">
+                <label><b>Contrato actual:</b></label><br>
+                @if($adopcion->contrato)
+                  <a href="{{ asset('storage/'.$adopcion->contrato) }}" target="_blank" class="btn btn-outline-info">
+                    <i class="fa fa-file-pdf"></i> Ver Contrato
+                  </a>
+                @else
+                  <span class="text-muted">No hay contrato</span>
+                @endif
+                <input type="file" name="contrato" class="form-control rounded mt-3" accept="application/pdf">
+              </div>
+
+              <div class="col-md-12 text-center mt-4">
+                <a href="{{ route('adopciones.index') }}" class="btn btn-outline-danger me-3 rounded">
+                  <i class="fa fa-times"></i> Cancelar
+                </a>
+                <button type="submit" class="btn btn-outline-primary rounded">
+                  <i class="fa fa-save"></i> Actualizar
+                </button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+$(document).ready(function () {
+$("#contrato").fileinput({
+  language: "es",
+  allowedFileExtensions: ["pdf"],
+  showCaption: false,
+  dropZoneEnabled: true,
+  showClose: false
+});
+
+
+  $.validator.addMethod("fechaPasada", function (value, element) {
+    if (!value) return false;
+    const hoy = new Date().toISOString().split('T')[0];
+    return value <= hoy;
+  }, "La fecha no puede ser futura.");
+
+  $.validator.setDefaults({ ignore: [] });
+
+  $("#FormAdopcionEdit").validate({
+    rules: {
+      fecha_adopcion: {
+        required: true,
+        fechaPasada: true
+      },
+      mascota_id: {
+        required: true
+      },
+      persona_id: {
+        required: true
+      },
+      lugar_adopcion: {
+        required: true
+      },
+      contrato: {
+        extension: "pdf"
+      }
+    },
+    messages: {
+      fecha_adopcion: {
+        required: "Seleccione la fecha de adopción",
+        fechaPasada: "La fecha no puede ser posterior a hoy"
+      },
+      mascota_id: {
+        required: "Seleccione una mascota"
+      },
+      persona_id: {
+        required: "Seleccione una persona"
+      },
+      lugar_adopcion: {
+        required: "Ingrese el lugar de adopción"
+      },
+      contrato: {
+        extension: "Solo se permiten archivos PDF"
+      }
+    },
+    errorElement: "span",
+    errorClass: "text-danger",
+    highlight: function(element) {
+      $(element).addClass("is-invalid");
+    },
+    unhighlight: function(element) {
+      $(element).removeClass("is-invalid");
+    },
+    submitHandler: function(form) {
+      form.submit();
+    }
+  });
+});
+</script>
+
+@endsection

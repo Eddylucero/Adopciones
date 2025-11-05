@@ -100,18 +100,18 @@ class MascotaController extends Controller
         return redirect()->route('mascotas.index')->with('success', 'Mascota actualizada correctamente.');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        $mascota = Mascota::findOrFail($id);
 
-        if ($mascota->foto && file_exists(public_path($mascota->foto))) {
-            unlink(public_path($mascota->foto));
+    public function destroy(Mascota $mascota)
+    {
+        if ($mascota->adopcions()->count() > 0) {
+            return redirect()->route('mascotas.index')
+                ->with('error', 'No se puede eliminar la mascota porque ya está adoptada o tiene adopciones registradas.');
         }
 
         $mascota->delete();
-        return redirect()->route('mascotas.index')->with('success', 'Mascota eliminada correctamente.');
+
+        return redirect()->route('mascotas.index')
+            ->with('success', 'Mascota eliminada correctamente.');
     }
+
 }

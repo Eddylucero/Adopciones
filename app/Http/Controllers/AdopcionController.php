@@ -3,63 +3,111 @@
 namespace App\Http\Controllers;
 
 use App\Models\Adopcion;
+use App\Models\Mascota;
+use App\Models\Persona;
 use Illuminate\Http\Request;
 
 class AdopcionController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
-        return view('adopciones.index');
+        $adopciones = Adopcion::with(['persona', 'mascota'])->get();
+        return view('adopciones.index', compact('adopciones'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
-        //
+        $personas = Persona::all();
+        $mascotas = Mascota::where('estado', 'Disponible')->get();
+        return view('adopciones.nuevaadopcion', compact('personas', 'mascotas'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'persona_id' => 'required|exists:personas,id',
+            'mascota_id' => 'required|exists:mascotas,id',
+            'fecha_adopcion' => 'required|date',
+            'lugar_adopcion' => 'nullable|string|max:255',
+            'observaciones' => 'nullable|string',
+            'contrato' => 'nullable|mimes:pdf|max:2048',
+        ]);
+
+        $data = $request->only([
+            'persona_id', 'mascota_id', 'fecha_adopcion', 'lugar_adopcion', 'observaciones'
+        ]);
+
+        if ($request->hasFile('contrato')) {
+            $file = $request->file('contrato');
+            $filename = time() . '_' . $file->getClientOriginalName();
+            $file->move(public_path('contratos'), $filename);
+            $data['contrato'] = 'contratos/' . $filename;
+        }
+
+        $adopcion = Adopcion::create($data);
+        $adopcion->mascota->update(['estado' => 'Adoptado']);
+
+        return redirect()->route('adopciones.index')->with('success', 'Adopción registrada correctamente.');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Adopcion $adopcion)
+    public function edit($id)
     {
-        //
+        $adopcion = Adopcion::findOrFail($id);
+        $personas = Persona::all();
+        $mascotas = Mascota::all();
+        return view('adopciones.editaradopcion', compact('adopcion', 'personas', 'mascotas'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Adopcion $adopcion)
+    public function update(Request $request, $id)
     {
-        //
+        $adopcion = Adopcion::findOrFail($id);
+
+        $request->validate([
+            'persona_id' => 'required|exists:personas,id',
+            'mascota_id' => 'required|exists:mascotas,id',
+            'fecha_adopcion' => 'required|date',
+            'lugar_adopcion' => 'nullable|string|max:255',
+            'observaciones' => 'nullable|string',
+            'contrato' => 'nullable|mimes:pdf|max:2048',
+        ]);
+
+        $data = $request->only([
+            'persona_id', 'mascota_id', 'fecha_adopcion', 'lugar_adopcion', 'observaciones'
+        ]);
+
+        if ($request->hasFile('contrato')) {
+            // Eliminar contrato anterior
+            if ($adopcion->contrato && file_exists(public_path($adopcion->contrato))) {
+                unlink(public_path($adopcion->contrato));
+            }
+
+            $file = $request->file('contrato');
+            $filename = time() . '_' . $file->getClientOriginalName();
+            $file->move(public_path('contratos'), $filename);
+            $data['contrato'] = 'contratos/' . $filename;
+        }
+
+        $adopcion->update($data);
+
+        return redirect()->route('adopciones.index')->with('success', 'Adopción actualizada correctamente.');
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Adopcion $adopcion)
+    public function destroy($id)
     {
-        //
-    }
+        $adopcion = Adopcion::findOrFail($id);
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Adopcion $adopcion)
-    {
-        //
+        // Eliminar PDF si existe
+        if ($adopcion->contrato && file_exists(public_path($adopcion->contrato))) {
+            unlink(public_path($adopcion->contrato));
+        }
+
+        // Volver a disponible la mascota
+        if ($adopcion->mascota) {
+            $adopcion->mascota->update(['estado' => 'Disponible']);
+        }
+
+        $adopcion->delete();
+
+        return redirect()->route('adopciones.index')->with('success', 'Adopción eliminada correctamente y mascota disponible.');
     }
 }
