@@ -90,6 +90,7 @@
         </button>
         <div class="collapse navbar-collapse" id="ftco-nav">
           <ul class="navbar-nav ml-auto">
+            <li class="nav-item"><a href="/" class="nav-link">Inicio</a></li>
             <li class="nav-item"><a href="{{ route('mascotas.index') }}" class="nav-link">Mascotas</a></li>
             <li class="nav-item"><a href="{{ route('personas.index') }}" class="nav-link">Personas</a></li>
             <li class="nav-item"><a href="{{ route('adopciones.index') }}" class="nav-link">Adopciones</a></li>
@@ -99,29 +100,11 @@
     </nav>
     <!-- END NAV -->
 
-    <div class="hero-wrap js-fullheight" style="background-image: url('{{ asset('pets/images/bg_1.jpg') }}');" data-stellar-background-ratio="0.5">
+    <div class="hero-wrap" style="background-image: url('{{ asset('pets/images/bg_1.jpg') }}'); background-size: cover; background-position: center; height: 400px;">
       <div class="overlay"></div>
       <div class="container">
         <div class="row no-gutters slider-text js-fullheight align-items-center justify-content-center" data-scrollax-parent="true">
           <div class="col-md-11 ftco-animate text-center">
-            <section class="ftco-section ftco-intro" style="background-color: rgba(255, 248, 240, 0.75); backdrop-filter: blur(6px); border-radius: 12px; padding: 30px;">
-                <div class="container">
-                    <div class="row justify-content-center">
-                    <div class="col-md-10 text-center ftco-animate">
-                        <h2 class="mb-3" style="font-weight: 600; color: #f96d00;">¡Gracias por visitar nuestro refugio virtual!</h2>
-                        <p style="font-size: 18px; color: #555;">
-                        Aquí no solo encontrarás mascotas, sino también historias de amor esperando ser escritas. Cada patita que ves busca un corazón que la abrace.
-                        </p>
-                        <blockquote class="mt-4" style="font-style: italic; color: #888;">
-                        “No se puede comprar el amor, pero sí se puede adoptar.”
-                        </blockquote>
-                        <a href="{{ route('mascotas.index') }}" class="btn btn-primary mt-4 px-4 py-2" style="font-size: 16px;">
-                        Conoce a nuestros amigos peludos
-                        </a>
-                    </div>
-                    </div>
-                </div>
-            </section>
 
           </div>
         </div>

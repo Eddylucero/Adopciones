@@ -64,14 +64,15 @@
                   </select>
                 </div>
               </div>
-
               <div class="col-md-6">
                 <div class="form-group">
                   <label><b>Estado:</b></label>
-                  <select name="estado" id="estado" class="form-control rounded">
+                  <select id="estado" class="form-control rounded" disabled>
                     <option value="Disponible" {{ $mascota->estado == 'Disponible' ? 'selected' : '' }}>Disponible</option>
                     <option value="Adoptado" {{ $mascota->estado == 'Adoptado' ? 'selected' : '' }}>Adoptado</option>
                   </select>
+                  {{-- Campo oculto para mantener el valor del estado --}}
+                  <input type="hidden" name="estado" value="{{ $mascota->estado }}">
                 </div>
               </div>
 
@@ -125,9 +126,7 @@ $("#foto").fileinput({
   dropZoneEnabled: true,
   showClose: false
 });
-</script>
 
-<script>
 $.validator.setDefaults({ ignore: [] });
 
 $("#FormMascotaEdit").validate({
@@ -139,7 +138,6 @@ $("#FormMascotaEdit").validate({
       pattern: /^[A-Za-zÁÉÍÓÚáéíóúÑñ\s]+$/
     },
     especie: { required: true },
-    estado: { required: true },
     sexo: { required: true },
     edad: { number: true, min: 0, max: 10 },
     foto: { extension: "jpg|jpeg|png|gif" }
@@ -152,7 +150,6 @@ $("#FormMascotaEdit").validate({
       pattern: "Solo se permiten letras y espacios"
     },
     especie: { required: "Debe seleccionar una especie" },
-    estado: { required: "Debe seleccionar un estado" },
     sexo: { required: "Debe seleccionar un sexo" },
     edad: {
       number: "Ingrese un valor numérico válido",
@@ -162,15 +159,6 @@ $("#FormMascotaEdit").validate({
     foto: {
       extension: "Formato permitido: jpg, jpeg, png o gif"
     }
-  }
-});
-</script>
-
-<script>
-$("#especie").rules("add", {
-  required: true,
-  messages: {
-    required: "Selecciona una especie antes de enviar"
   }
 });
 </script>
