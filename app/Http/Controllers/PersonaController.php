@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Persona;
+use App\Models\Mascota;
 use Illuminate\Http\Request;
 
 class PersonaController extends Controller
@@ -15,7 +16,26 @@ class PersonaController extends Controller
 
     public function nuevovisi()
     {
-        return view('personas.nuevovisi');
+
+        $usuario = auth()->user();
+
+        if (!$usuario) {
+            return redirect()->route('login')->with('error', 'Debes iniciar sesión para ver tus adopciones.');
+        }
+        $persona = \App\Models\Persona::where('correo', $usuario->email)->first();
+
+        if (!$persona) {
+            return view('personas.nuevovisi', ['mascotas' => collect(), 'persona' => null]);
+        }
+
+        $adopciones = \App\Models\Adopcion::where('persona_id', $persona->id)
+                        ->where('estado', 'Aprobada')
+                        ->with('mascota')
+                        ->get();
+
+        $mascotas = $adopciones->pluck('mascota');
+
+        return view('personas.nuevovisi', compact('mascotas', 'persona'));
     }
 
     public function create()

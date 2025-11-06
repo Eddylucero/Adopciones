@@ -19,6 +19,7 @@
                     <th>Mascota</th>
                     <th>Persona</th>
                     <th>Lugar</th>
+                    <th>Estado</th>
                     <th>Contrato</th>
                     <th>Acciones</th>
                 </tr>
@@ -27,10 +28,21 @@
                 @foreach($adopciones as $adopcion)
                     <tr>
                         <td>{{ $adopcion->id }}</td>
-                        <td>{{ $adopcion->fecha_adopcion }}</td>
+                        <td>{{ $adopcion->fecha_adopcion ?? '—' }}</td>
                         <td>{{ $adopcion->mascota->nombre ?? '—' }}</td>
                         <td>{{ $adopcion->persona->nombre ?? '—' }} {{ $adopcion->persona->apellido ?? '' }}</td>
                         <td>{{ $adopcion->lugar_adopcion ?? '—' }}</td>
+
+                        <td>
+                            @if($adopcion->estado === 'Pendiente')
+                                <span class="badge bg-warning text-dark">Pendiente</span>
+                            @elseif($adopcion->estado === 'Aprobada')
+                                <span class="badge bg-success">Aprobada</span>
+                            @else
+                                <span class="badge bg-danger">Rechazada</span>
+                            @endif
+                        </td>
+
                         <td>
                             @if($adopcion->contrato)
                                 <iframe src="{{ asset($adopcion->contrato) }}" width="80px" height="80px"></iframe>
@@ -39,9 +51,23 @@
                             @endif
                         </td>
 
-
-
                         <td class="text-center">
+                            @if($adopcion->estado === 'Pendiente')
+                                <form action="{{ route('adopciones.aprobar', $adopcion->id) }}" method="POST" style="display:inline;">
+                                    @csrf
+                                    <button type="submit" class="btn btn-outline-success btn-sm">
+                                        <i class="fa fa-check"></i>
+                                    </button>
+                                </form>
+
+                                <form action="{{ route('adopciones.rechazar', $adopcion->id) }}" method="POST" style="display:inline;">
+                                    @csrf
+                                    <button type="submit" class="btn btn-outline-danger btn-sm">
+                                        <i class="fa fa-times"></i>
+                                    </button>
+                                </form>
+                            @endif
+
                             <a href="{{ route('adopciones.edit', $adopcion->id) }}" class="btn btn-outline-warning btn-sm">
                                 <i class="fa fa-pen"></i>
                             </a>
@@ -49,7 +75,7 @@
                             <form action="{{ route('adopciones.destroy', $adopcion->id) }}" method="POST" style="display:inline;" class="form-eliminar">
                                 @csrf
                                 @method('DELETE')
-                                <button type="submit" class="btn btn-outline-danger btn-sm btn-eliminar">
+                                <button type="submit" class="btn btn-outline-secondary btn-sm btn-eliminar">
                                     <i class="fa fa-trash"></i>
                                 </button>
                             </form>

@@ -21,7 +21,15 @@
                     <h5 class="card-title" style="font-weight: 600;">{{ $mascota->nombre }}</h5>
                     <p class="text-muted mb-1">{{ $mascota->especie }} - {{ $mascota->raza ?? 'Sin raza' }}</p>
                     <p class="small" style="color: #777;">{{ Str::limit($mascota->descripcion, 70, '...') }}</p>
-                    
+
+                    @if ($mascota->estado === 'Disponible')
+                      <a href="{{ route('adopvisi', $mascota->id) }}" 
+                        class="btn btn-outline-success rounded-pill mt-3 px-4">
+                        <i class="fa fa-paw me-2"></i> Adoptar
+                      </a>
+                    @else
+                      <span class="badge bg-secondary mt-3">Adoptado</span>
+                    @endif
                   </div>
                 </div>
               </div>
@@ -40,7 +48,7 @@
       <h2 class="mb-4" style="font-weight: 600;">¿Quieres ser parte del cambio?</h2>
       <p class="mb-4" style="font-size: 18px; color: #555;">Puedes adoptar, donar o unirte como voluntario. Cada acción cuenta para salvar más vidas.</p>
       <a href="{{ route('personas.nuevovisi') }}" class="btn btn-success btn-lg rounded-pill px-5 py-3" style="transition: all 0.2s;">
-        <i class="fa fa-heart me-2"></i> ¡Adopta Ahora!
+        <i class="fa fa-heart me-2"></i> ¡Ver mis Mascotas!
       </a>
     </div>
   </section>

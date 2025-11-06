@@ -3,99 +3,51 @@
 @section('content')
 
 <section class="ftco-section d-flex align-items-center justify-content-center" style="min-height: 100vh; background-color: #fff8f5;">
-  <div class="container">
-    <div class="row justify-content-center">
-      <div class="col-md-10 col-lg-7 p-4 py-5 ftco-animate">
-        <div class="bg-light p-5 rounded shadow" style="background-color: rgba(255,255,255,0.95); border-radius: 20px;">
-          <h2 class="mb-4 text-center text-dark">Registro de Visitante</h2>
-          <p class="text-center text-muted mb-4">Completa el formulario para unirte a nuestra comunidad.</p>
+  <div class="container py-5">
 
-          <form action="{{ route('personas.store') }}" id="FormVisitante" method="post">
-            @csrf
-            <input type="hidden" name="origen" value="visitante">
-            <div class="row g-3">
-
-              <div class="col-md-6">
-                <div class="form-group">
-                  <label><b>Nombre:</b></label>
-                  <input type="text" name="nombre" id="nombre" class="form-control rounded" placeholder="Tu nombre">
-                </div>
-              </div>
-
-              <div class="col-md-6">
-                <div class="form-group">
-                  <label><b>Apellido:</b></label>
-                  <input type="text" name="apellido" id="apellido" class="form-control rounded" placeholder="Tu apellido">
-                </div>
-              </div>
-
-              <div class="col-md-6">
-                <div class="form-group">
-                  <label><b>Cédula:</b></label>
-                  <input type="text" name="cedula" id="cedula" class="form-control rounded" placeholder="Tu cédula (10 dígitos)" maxlength="10">
-                </div>
-              </div>
-
-              <div class="col-md-6">
-                <div class="form-group">
-                  <label><b>Teléfono:</b></label>
-                  <input type="text" name="telefono" id="telefono" class="form-control rounded" placeholder="Tu número de teléfono (opcional)">
-                </div>
-              </div>
-
-              <div class="col-md-12">
-                <div class="form-group">
-                  <label><b>Correo electrónico:</b></label>
-                  <input type="email" name="correo" id="correo" class="form-control rounded" placeholder="Correo electrónico válido">
-                </div>
-              </div>
-
-              <div class="col-md-12">
-                <div class="form-group">
-                  <label><b>Dirección:</b></label>
-                  <input type="text" name="direccion" id="direccion" class="form-control rounded" placeholder="Dirección completa (opcional)">
-                </div>
-              </div>
-
-              <div class="col-md-12 text-center mt-4">
-                <a href="{{ route('home') }}" class="btn btn-outline-danger me-3 rounded-pill px-4">
-                  <i class="fa fa-arrow-left"></i> Volver
-                </a>
-                <button type="submit" class="btn btn-outline-success rounded-pill px-4">
-                  <i class="fa fa-save"></i> Registrar
-                </button>
-              </div>
-            </div>
-          </form>
-
-        </div>
-      </div>
+    <div class="text-center mb-5">
+      <h2 class="text-dark fw-bold">Tus Mascotas Adoptadas</h2>
+      <p class="text-muted">Aquí puedes ver las mascotas que has adoptado y ahora forman parte de tu familia.</p>
     </div>
+
+    @if($persona)
+      <div class="alert alert-info text-center">
+        <strong>Bienvenido, {{ $persona->nombre }} {{ $persona->apellido ?? '' }}</strong><br>
+        <small>Correo: {{ $persona->correo }}</small>
+      </div>
+    @endif
+
+    <div class="row">
+      @forelse($mascotas as $mascota)
+        <div class="col-md-4 mb-4 ftco-animate">
+          <div class="card shadow-sm border-0 rounded-lg h-100 text-center" style="transition: transform 0.2s;">
+            <img src="{{ asset($mascota->foto) }}" class="card-img-top rounded-top" style="height: 250px; object-fit: cover;" alt="{{ $mascota->nombre }}">
+            <div class="card-body">
+              <h5 class="card-title fw-bold">{{ $mascota->nombre }}</h5>
+              <p class="text-muted">{{ $mascota->especie }} - {{ $mascota->raza ?? 'Sin raza' }}</p>
+              <p><span class="badge bg-success">{{ $mascota->estado }}</span></p>
+              <p class="small text-secondary">{{ Str::limit($mascota->descripcion, 80, '...') }}</p>
+            </div>
+          </div>
+        </div>
+      @empty
+        <div class="col-12 text-center mt-5">
+          <img src="https://cdn-icons-png.flaticon.com/512/616/616408.png" width="120" alt="Sin mascotas">
+          <h5 class="mt-3 text-muted">Aún no has adoptado ninguna mascota</h5>
+          <a href="{{ route('home') }}" class="btn btn-outline-success mt-3 rounded-pill px-4">
+            <i class="fa fa-paw"></i> Ver Mascotas Disponibles
+          </a>
+        </div>
+      @endforelse
+    </div>
+
   </div>
 </section>
 
 <style>
-  .btn:hover { transform: scale(1.03); }
+.card:hover {
+  transform: scale(1.03);
+}
 </style>
 
-<script>
-$.validator.setDefaults({ ignore: [] });
-
-$("#FormVisitante").validate({
-  rules: {
-    nombre: { required: true, minlength: 2, maxlength: 100, pattern: /^[A-Za-zÁÉÍÓÚáéíóúÑñ\s]+$/ },
-    apellido: { required: true, minlength: 2, maxlength: 100, pattern: /^[A-Za-zÁÉÍÓÚáéíóúÑñ\s]+$/ },
-    cedula: { required: true, digits: true, minlength: 10, maxlength: 10 },
-    correo: { required: true, email: true },
-    telefono: { maxlength: 20 }
-  },
-  messages: {
-    nombre: { required: "El nombre es obligatorio", minlength: "Debe tener al menos 2 caracteres", maxlength: "Máximo 100 caracteres", pattern: "Solo se permiten letras y espacios" },
-    apellido: { required: "El apellido es obligatorio", minlength: "Debe tener al menos 2 caracteres", maxlength: "Máximo 100 caracteres", pattern: "Solo se permiten letras y espacios" },
-    cedula: { required: "La cédula es obligatoria", digits: "Solo se permiten números", minlength: "Debe tener exactamente 10 dígitos", maxlength: "Debe tener exactamente 10 dígitos" },
-    correo: { required: "El correo es obligatorio", email: "Ingrese un correo válido" },
-    telefono: { maxlength: "Máximo 20 caracteres" }
-  }
-});
-</script>
 @endsection

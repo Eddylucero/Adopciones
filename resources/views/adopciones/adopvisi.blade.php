@@ -24,17 +24,25 @@
               <div class="col-md-6">
                 <div class="form-group">
                   <label><b>Nombre completo:</b></label>
-                  <input type="text" name="nombre" class="form-control rounded" placeholder="Tu nombre y apellido">
+                  <input type="text" 
+                         name="nombre" 
+                         class="form-control rounded" 
+                         placeholder="Tu nombre y apellido"
+                         value="{{ $usuario ? $usuario->name : '' }}"
+                         {{ $usuario ? 'readonly' : '' }}>
                 </div>
               </div>
-
               <div class="col-md-6">
                 <div class="form-group">
                   <label><b>Correo electrónico:</b></label>
-                  <input type="email" name="correo" class="form-control rounded" placeholder="usuario@correo.com">
+                  <input type="email" 
+                         name="correo" 
+                         class="form-control rounded" 
+                         placeholder="usuario@correo.com"
+                         value="{{ $usuario ? $usuario->email : '' }}"
+                         {{ $usuario ? 'readonly' : '' }}>
                 </div>
               </div>
-
               <div class="col-md-6">
                 <div class="form-group">
                   <label><b>Teléfono:</b></label>

@@ -16,27 +16,34 @@ class DashboardController extends Controller
         $totalPersonas = Persona::count();
         $totalAdopciones = Adopcion::count();
 
+        // 📊 Nuevos totales
+        $adopcionesAprobadas = Adopcion::where('estado', 'Aprobada')->count();
+        $adopcionesRechazadas = Adopcion::where('estado', 'Rechazada')->count();
+
+        // 🐾 Adopciones por especie
         $adopcionesPorEspecie = Mascota::select('especie', DB::raw('count(*) as total'))
             ->join('adopcions', 'adopcions.mascota_id', '=', 'mascotas.id')
+            ->where('adopcions.estado', 'Aprobada')
             ->groupBy('especie')
             ->get();
 
-        $adopcionesPorMes = Adopcion::select(
-                DB::raw("EXTRACT(MONTH FROM fecha_adopcion) AS mes"),
-                DB::raw('COUNT(*) AS total')
-            )
+        // 📆 Adopciones por mes
+        $adopcionesPorMes = Adopcion::selectRaw('EXTRACT(MONTH FROM fecha_adopcion) as mes, COUNT(*) as total')
+            ->whereNotNull('fecha_adopcion')
             ->groupBy('mes')
-            ->orderBy('mes', 'asc')
+            ->orderBy('mes')
             ->get();
 
         $meses = ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
-
         $labelsMeses = [];
         $valoresMeses = [];
 
         foreach ($adopcionesPorMes as $dato) {
-            $labelsMeses[] = $meses[$dato->mes - 1];
-            $valoresMeses[] = $dato->total;
+            $indice = intval($dato->mes) - 1;
+            if (isset($meses[$indice])) {
+                $labelsMeses[] = $meses[$indice];
+                $valoresMeses[] = $dato->total;
+            }
         }
 
         $especies = $adopcionesPorEspecie->pluck('total', 'especie');
@@ -47,7 +54,9 @@ class DashboardController extends Controller
             'totalAdopciones',
             'especies',
             'labelsMeses',
-            'valoresMeses'
+            'valoresMeses',
+            'adopcionesAprobadas',
+            'adopcionesRechazadas'
         ));
     }
 }

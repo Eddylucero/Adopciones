@@ -18,6 +18,7 @@ class Adopcion extends Model
         'observaciones',
         'lugar_adopcion',
         'contrato',
+        'estado'
     ];
 
     public function persona()

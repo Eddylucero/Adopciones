@@ -25,8 +25,34 @@ class AdopcionController extends Controller
     public function adopvisi($id)
     {
         $mascota = Mascota::findOrFail($id);
-        return view('adopciones.adopvisi', compact('mascota'));
+        $usuario = auth()->user(); // obtiene el usuario autenticado o null
+        return view('adopciones.adopvisi', compact('mascota', 'usuario'));
     }
+
+    public function aprobar($id)
+    {
+        $adopcion = Adopcion::findOrFail($id);
+        $adopcion->update(['estado' => 'Aprobada']);
+
+        if ($adopcion->mascota) {
+            $adopcion->mascota->update(['estado' => 'Adoptado']);
+        }
+
+        return redirect()->route('adopciones.index')->with('success', 'Adopción aprobada correctamente.');
+    }
+
+    public function rechazar($id)
+    {
+        $adopcion = Adopcion::findOrFail($id);
+        $adopcion->update(['estado' => 'Rechazada']);
+
+        if ($adopcion->mascota) {
+            $adopcion->mascota->update(['estado' => 'Disponible']);
+        }
+
+        return redirect()->route('adopciones.index')->with('error', 'Adopción rechazada correctamente.');
+    }
+
 
     public function store(Request $request)
     {
@@ -44,11 +70,33 @@ class AdopcionController extends Controller
             'motivo' => 'nullable|string|max:500',
         ]);
 
-        // 🧡 Si proviene del formulario visitante
         if ($request->input('origen') === 'visitante') {
+            $persona = Persona::where('correo', $request->correo)
+                ->orWhere('telefono', $request->telefono)
+                ->first();
+
+            if (!$persona) {
+                $persona = Persona::create([
+                    'nombre' => $request->nombre,
+                    'apellido' => '',
+                    'cedula' => null,
+                    'direccion' => null,
+                    'telefono' => $request->telefono,
+                    'correo' => $request->correo,
+                ]);
+            }
+
+            Adopcion::create([
+                'persona_id' => $persona->id,
+                'mascota_id' => $request->mascota_id,
+                'estado' => 'Pendiente',
+                'observaciones' => $request->motivo,
+            ]);
+
             return redirect('/')
                 ->with('success', 'Tu solicitud de adopción fue enviada correctamente. Nos pondremos en contacto contigo pronto.');
         }
+
         $data = $request->only([
             'persona_id', 'mascota_id', 'fecha_adopcion', 'lugar_adopcion', 'observaciones'
         ]);
@@ -61,10 +109,12 @@ class AdopcionController extends Controller
         }
 
         $adopcion = Adopcion::create($data);
+
         $adopcion->mascota->update(['estado' => 'Adoptado']);
 
         return redirect()->route('adopciones.index')->with('success', 'Adopción registrada correctamente.');
     }
+
 
     public function edit($id)
     {

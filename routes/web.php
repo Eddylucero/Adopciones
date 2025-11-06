@@ -41,5 +41,8 @@ Route::middleware('auth')->group(function () {
         Route::resource('mascotas', MascotaController::class);
         Route::resource('adopciones', AdopcionController::class);
         Route::resource('dashboard', DashboardController::class);
+
+        Route::post('/adopciones/{id}/aprobar', [AdopcionController::class, 'aprobar'])->name('adopciones.aprobar');
+        Route::post('/adopciones/{id}/rechazar', [AdopcionController::class, 'rechazar'])->name('adopciones.rechazar');
     });
 });
