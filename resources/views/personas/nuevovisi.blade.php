@@ -61,7 +61,7 @@
               </div>
 
               <div class="col-md-12 text-center mt-4">
-                <a href="{{ url('/') }}" class="btn btn-outline-danger me-3 rounded-pill px-4">
+                <a href="{{ route('home') }}" class="btn btn-outline-danger me-3 rounded-pill px-4">
                   <i class="fa fa-arrow-left"></i> Volver
                 </a>
                 <button type="submit" class="btn btn-outline-success rounded-pill px-4">
