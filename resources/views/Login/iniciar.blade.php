@@ -3,108 +3,54 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="shortcut icon" type="image/png" href="{{ asset('spike/src/assets/images/logos/favicon.png') }}" />
+  <link rel="shortcut icon" type="image/png" href="{{ asset('spike/assets/images/logos/favicon.png') }}" />
   <title>Iniciar Sesión | Adopciones</title>
 
-  <link rel="stylesheet" href="{{ asset('spike/src/assets/css/styles.min.css') }}">
+  <!-- CSS -->
+  <link rel="stylesheet" href="{{ asset('spike/assets/css/styles.min.css') }}">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
+  <!-- JS -->
   <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.5/dist/jquery.validate.min.js"></script>
 
   <style>
-    body {
-      background-color: #fff8f5;
-    }
-
-    .card {
-      border-radius: 16px;
-    }
-
-    .btn-primary {
-      background-color: #ffb84d;
-      border: none;
-      font-weight: bold;
-    }
-
-    .btn-primary:hover {
-      background-color: #ffa31a;
-    }
-
-    .error {
-      color: red;
-      font-family: 'Montserrat';
-    }
-
-    .form-control.error {
-      border: 1px solid red;
-    }
-
-    #loading-overlay {
-      display: none;
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100vw;
-      height: 100vh;
-      background: rgba(0, 0, 0, 0.3);
-      z-index: 9999;
-      justify-content: center;
-      align-items: center;
-      opacity: 0;
-      transition: opacity 0.3s ease;
-    }
-
-    #loading-overlay.d-flex {
-      display: flex;
-      opacity: 1;
-    }
-
-    .spinner {
-      border: 8px solid #f3f3f3;
-      border-top: 8px solid #ffb84d;
-      border-radius: 50%;
-      width: 80px;
-      height: 80px;
-      animation: spin 1s linear infinite;
-    }
-
-    @keyframes spin {
-      0% { transform: rotate(0deg); }
-      100% { transform: rotate(360deg); }
-    }
+    body { background-color: #fff8f5; }
+    .card { border-radius: 16px; }
+    .btn-primary { background-color: #ffb84d; border: none; font-weight: bold; }
+    .btn-primary:hover { background-color: #ffa31a; }
+    .error { color: red; font-family: 'Montserrat'; }
+    .form-control.error { border: 1px solid red; }
+    #loading-overlay { display: none; position: fixed; top:0; left:0; width:100vw; height:100vh; background: rgba(0,0,0,0.3); z-index:9999; justify-content:center; align-items:center; opacity:0; transition: opacity 0.3s ease; }
+    #loading-overlay.d-flex { display:flex; opacity:1; }
+    .spinner { border:8px solid #f3f3f3; border-top:8px solid #ffb84d; border-radius:50%; width:80px; height:80px; animation: spin 1s linear infinite; }
+    @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
   </style>
 </head>
 
 <body>
-  <div id="loading-overlay">
-    <div class="spinner"></div>
-  </div>
+  <div id="loading-overlay"><div class="spinner"></div></div>
 
   <div class="page-wrapper min-vh-100 d-flex align-items-center justify-content-center">
-    <div class="card shadow p-4" style="width: 420px;">
+    <div class="card shadow p-4" style="width:420px;">
       <div class="card-body">
         <div class="text-center mb-4">
           <h4 class="mt-3 fw-bold text-dark">Iniciar Sesión</h4>
           <p class="text-muted">Bienvenido al sistema de adopciones</p>
         </div>
 
+        <!-- Mensajes de sesión -->
         @if(session('success'))
           <div class="alert alert-success">{{ session('success') }}</div>
         @endif
-
         @if(session('error'))
           <div class="alert alert-danger">{{ session('error') }}</div>
-          <script>
-            $(document).ready(function() {
-              $("#loading-overlay").removeClass("d-flex").fadeOut();
-            });
-          </script>
+          <script>$(document).ready(function(){ $("#loading-overlay").removeClass("d-flex").fadeOut(); });</script>
         @endif
 
+        <!-- Formulario -->
         <form id="LoginForm" method="POST" action="{{ route('login.post') }}">
           @csrf
-
           <div class="mb-3">
             <label class="form-label"><i class="fa-solid fa-envelope me-2 text-warning"></i>Correo electrónico</label>
             <input type="email" name="email" class="form-control" placeholder="usuario@example.com">
