@@ -10,7 +10,7 @@ use App\Models\User;
 class AuthController extends Controller
 {
     /**
-     * Mostrar formulario de inicio de sesión
+     * 
      */
     public function showLoginForm()
     {
@@ -18,7 +18,7 @@ class AuthController extends Controller
     }
 
     /**
-     * Procesar inicio de sesión
+     *
      */
     public function login(Request $request)
     {
@@ -43,7 +43,7 @@ class AuthController extends Controller
     }
 
     /**
-     * Cerrar sesión
+     *
      */
     public function logout(Request $request)
     {
@@ -55,7 +55,7 @@ class AuthController extends Controller
     }
 
     /**
-     * Mostrar formulario de registro
+     *
      */
     public function showRegisterForm()
     {
@@ -63,7 +63,7 @@ class AuthController extends Controller
     }
 
     /**
-     * Procesar registro de usuario
+     *
      */
     public function register(Request $request)
     {
@@ -82,7 +82,7 @@ class AuthController extends Controller
     }
 
     /**
-     * Recuperar contraseña → solo mensaje
+     *
      */
     public function recoverPassword()
     {

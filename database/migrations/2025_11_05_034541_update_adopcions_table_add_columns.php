@@ -12,7 +12,6 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('adopcions', function (Blueprint $table) {
-            // Campos nuevos
             $table->date('fecha_adopcion')->nullable()->after('id');
             $table->unsignedBigInteger('mascota_id')->nullable()->after('fecha_adopcion');
             $table->unsignedBigInteger('persona_id')->nullable()->after('mascota_id');
@@ -20,7 +19,6 @@ return new class extends Migration
             $table->string('lugar_adopcion')->nullable()->after('observaciones');
             $table->string('contrato')->nullable()->after('lugar_adopcion');
 
-            // Claves foráneas (usamos addForeign por si las tablas aún no existían antes)
             $table->foreign('mascota_id')
                   ->references('id')->on('mascotas')
                   ->onUpdate('cascade')
