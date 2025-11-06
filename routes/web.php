@@ -9,6 +9,7 @@ use App\Http\Controllers\AdopcionController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DashboardController;
 
+// 🔹 Redirige según autenticación
 Route::get('/', function () {
     return Auth::check() ? redirect()->route('home') : redirect()->route('login');
 });
@@ -31,13 +32,56 @@ Route::middleware('auth')->group(function () {
 
     // 🔹 Área de administrador
     Route::middleware('admin')->group(function () {
-        Route::resource('personas', PersonaController::class);
-        Route::resource('mascotas', MascotaController::class);
-        Route::resource('adopciones', AdopcionController::class);
-        Route::resource('dashboard', DashboardController::class);
 
-        // Rutas personalizadas para adopciones
-        Route::post('/adopciones/{id}/aprobar', [AdopcionController::class, 'aprobar'])->name('adopciones.aprobar');
-        Route::post('/adopciones/{id}/rechazar', [AdopcionController::class, 'rechazar'])->name('adopciones.rechazar');
+        // 🔹 Rutas resource con nombres únicos explícitos
+        Route::resource('personas', PersonaController::class)
+            ->names([
+                'index' => 'personas.index',
+                'create' => 'personas.create',
+                'store' => 'personas.store',
+                'show' => 'personas.show',
+                'edit' => 'personas.edit',
+                'update' => 'personas.update',
+                'destroy' => 'personas.destroy',
+            ]);
+
+        Route::resource('mascotas', MascotaController::class)
+            ->names([
+                'index' => 'mascotas.index',
+                'create' => 'mascotas.create',
+                'store' => 'mascotas.store',
+                'show' => 'mascotas.show',
+                'edit' => 'mascotas.edit',
+                'update' => 'mascotas.update',
+                'destroy' => 'mascotas.destroy',
+            ]);
+
+        Route::resource('adopciones', AdopcionController::class)
+            ->names([
+                'index' => 'adopciones.index',
+                'create' => 'adopciones.create',
+                'store' => 'adopciones.store',
+                'show' => 'adopciones.show',
+                'edit' => 'adopciones.edit',
+                'update' => 'adopciones.update',
+                'destroy' => 'adopciones.destroy',
+            ]);
+
+        Route::resource('dashboard', DashboardController::class)
+            ->names([
+                'index' => 'dashboard.index',
+                'create' => 'dashboard.create',
+                'store' => 'dashboard.store',
+                'show' => 'dashboard.show',
+                'edit' => 'dashboard.edit',
+                'update' => 'dashboard.update',
+                'destroy' => 'dashboard.destroy',
+            ]);
+
+        // 🔹 Rutas personalizadas para adopciones
+        Route::post('/adopciones/{id}/aprobar', [AdopcionController::class, 'aprobar'])
+            ->name('adopciones.aprobar');
+        Route::post('/adopciones/{id}/rechazar', [AdopcionController::class, 'rechazar'])
+            ->name('adopciones.rechazar');
     });
 });
