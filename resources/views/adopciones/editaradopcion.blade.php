@@ -51,16 +51,9 @@
                 <textarea name="observaciones" class="form-control rounded" rows="4">{{ $adopcion->observaciones }}</textarea>
               </div>
 
-              <div class="col-md-12">
-                <label><b>Contrato actual:</b></label><br>
-                @if($adopcion->contrato)
-                  <a href="{{ asset('storage/'.$adopcion->contrato) }}" target="_blank" class="btn btn-outline-info">
-                    <i class="fa fa-file-pdf"></i> Ver Contrato
-                  </a>
-                @else
-                  <span class="text-muted">No hay contrato</span>
-                @endif
-                <input type="file" name="contrato" class="form-control rounded mt-3" accept="application/pdf">
+              <div class="col-md-12 mt-3">
+                <label><b>Contrato:</b></label>
+                <input id="contrato" type="file" name="contrato" class="form-control rounded mt-2" accept="application/pdf">
               </div>
 
               <div class="col-md-12 text-center mt-4">
@@ -71,6 +64,7 @@
                   <i class="fa fa-save"></i> Actualizar
                 </button>
               </div>
+
             </div>
           </form>
         </div>
@@ -79,17 +73,36 @@
   </div>
 </section>
 
+{{-- Scripts --}}
 <script>
 $(document).ready(function () {
-$("#contrato").fileinput({
-  language: "es",
-  allowedFileExtensions: ["pdf"],
-  showCaption: false,
-  dropZoneEnabled: true,
-  showClose: false
-});
+  // Inicializar fileinput con vista previa del contrato actual
+  $("#contrato").fileinput({
+    language: "es",
+    allowedFileExtensions: ["pdf"],
+    showCaption: false,
+    dropZoneEnabled: true,
+    showClose: false,
+    @if($adopcion->contrato)
+    initialPreview: [
+      "{{ asset('storage/'.$adopcion->contrato) }}"
+    ],
+    initialPreviewAsData: true,
+    initialPreviewFileType: 'pdf',
+    initialPreviewConfig: [
+      { 
+        type: "pdf", 
+        caption: "Contrato actual", 
+        downloadUrl: "{{ asset('storage/'.$adopcion->contrato) }}", 
+        key: 1 
+      }
+    ],
+    overwriteInitial: true,
+    @endif
+    theme: "fa5"
+  });
 
-
+  // Validación personalizada para fecha
   $.validator.addMethod("fechaPasada", function (value, element) {
     if (!value) return false;
     const hoy = new Date().toISOString().split('T')[0];
@@ -98,42 +111,27 @@ $("#contrato").fileinput({
 
   $.validator.setDefaults({ ignore: [] });
 
+  // Validar formulario
   $("#FormAdopcionEdit").validate({
     rules: {
       fecha_adopcion: {
         required: true,
         fechaPasada: true
       },
-      mascota_id: {
-        required: true
-      },
-      persona_id: {
-        required: true
-      },
-      lugar_adopcion: {
-        required: true
-      },
-      contrato: {
-        extension: "pdf"
-      }
+      mascota_id: { required: true },
+      persona_id: { required: true },
+      lugar_adopcion: { required: true },
+      contrato: { extension: "pdf" }
     },
     messages: {
       fecha_adopcion: {
         required: "Seleccione la fecha de adopción",
         fechaPasada: "La fecha no puede ser posterior a hoy"
       },
-      mascota_id: {
-        required: "Seleccione una mascota"
-      },
-      persona_id: {
-        required: "Seleccione una persona"
-      },
-      lugar_adopcion: {
-        required: "Ingrese el lugar de adopción"
-      },
-      contrato: {
-        extension: "Solo se permiten archivos PDF"
-      }
+      mascota_id: { required: "Seleccione una mascota" },
+      persona_id: { required: "Seleccione una persona" },
+      lugar_adopcion: { required: "Ingrese el lugar de adopción" },
+      contrato: { extension: "Solo se permiten archivos PDF" }
     },
     errorElement: "span",
     errorClass: "text-danger",
