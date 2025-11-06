@@ -60,7 +60,13 @@
               <iconify-icon icon="solar:menu-dots-linear" class="nav-small-cap-icon fs-4"></iconify-icon>
               <span class="hide-menu">Gestión</span>
             </li>
-            
+            <li class="sidebar-item">
+              <a class="sidebar-link primary-hover-bg" href="{{ route('dashboard.index') }}" aria-expanded="false">
+                <iconify-icon icon="dashicons:dashboard"></iconify-icon>
+                <span class="hide-menu">Dashboard</span>
+              </a>
+            </li>
+
             <li class="sidebar-item">
               <a class="sidebar-link primary-hover-bg" href="{{ route('mascotas.index') }}" aria-expanded="false">
                 <iconify-icon icon="solar:paw-line-duotone"></iconify-icon>

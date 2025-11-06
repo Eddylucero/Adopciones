@@ -2,6 +2,7 @@
 <html lang="en">
   <head>
     <title>Home - Adopciones</title>
+    <link rel="shortcut icon" type="image/png" href="{{ asset('spike/src/assets/images/logos/favicon.png') }}" />
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
@@ -193,17 +194,6 @@
     <script>
     document.addEventListener('DOMContentLoaded', function () {
         const logoutBtn = document.getElementById('logout-button');
-        
-        // Corrección de un potencial error de Bootstrap 5 en un entorno BS4/3
-        // La funcionalidad de stopPropagation ya debería ser manejada por el JS local.
-        /*
-        document.querySelectorAll('.dropdown-menu').forEach(function(menu) {
-            menu.addEventListener('click', function(e) {
-                e.stopPropagation();
-            });
-        });
-        */
-
         logoutBtn.addEventListener('click', function (e) {
             e.preventDefault();
             e.stopPropagation();

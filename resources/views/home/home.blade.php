@@ -1,7 +1,7 @@
   @extends('layout.app')
 
   @section('content')
-  <section id="mascotas-section" class="ftco-section bg-white py-5">
+  <section id="mascotas-section" class="ftco-section bg-gray-300 py-5">
     <div class="container">
       <section class="ftco-section bg-white py-5">
         <div class="container">
@@ -21,15 +21,13 @@
                     <h5 class="card-title" style="font-weight: 600;">{{ $mascota->nombre }}</h5>
                     <p class="text-muted mb-1">{{ $mascota->especie }} - {{ $mascota->raza ?? 'Sin raza' }}</p>
                     <p class="small" style="color: #777;">{{ Str::limit($mascota->descripcion, 70, '...') }}</p>
-                    <a href="{{ route('mascotas.show', $mascota->id) }}" class="btn btn-outline-success btn-sm rounded-pill mt-2" style="transition: all 0.2s;">
-                      Ver Detalles
-                    </a>
+                    
                   </div>
                 </div>
               </div>
             @empty
               <div class="col-12 text-center">
-                <p class="text-muted">No hay mascotas disponibles en este momento 🐶🐱</p>
+                <p class="text-muted">No hay mascotas disponibles en este momento</p>
               </div>
             @endforelse
           </div>

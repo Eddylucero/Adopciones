@@ -7,31 +7,22 @@ use Illuminate\Http\Request;
 
 class PersonaController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
         $personas = Persona::all();
         return view('personas.index', compact('personas'));
     }
 
-    public function nuevovisi() 
+    public function nuevovisi()
     {
         return view('personas.nuevovisi');
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
         return view('personas.nuevapersona');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
         $datos = $request->validate([
@@ -43,27 +34,28 @@ class PersonaController extends Controller
             'correo' => 'nullable|email|max:255',
         ]);
 
+        $existe = Persona::where('cedula', $request->cedula)
+            ->orWhere('correo', $request->correo)
+            ->first();
+
+        if ($existe) {
+            return back()
+                ->with('error', 'Ya existe un registro con esta cédula o correo electrónico.')
+                ->withInput();
+        }
+
         Persona::create($datos);
+
         if ($request->input('origen') === 'visitante') {
             return redirect('/')
                 ->with('success', '¡Gracias por registrarte! Tu información fue enviada correctamente.');
         }
+
         return redirect()
             ->route('personas.index')
             ->with('success', 'Persona registrada correctamente.');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Persona $persona)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
     public function edit(Persona $persona)
     {
         return view('personas.editarpersona', compact('persona'));
@@ -85,9 +77,6 @@ class PersonaController extends Controller
         return redirect()->route('personas.index')->with('success', 'Persona actualizada correctamente.');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(Persona $persona)
     {
         if ($persona->adopciones()->count() > 0) {
@@ -100,5 +89,4 @@ class PersonaController extends Controller
         return redirect()->route('personas.index')
             ->with('success', 'Persona eliminada correctamente.');
     }
-
 }

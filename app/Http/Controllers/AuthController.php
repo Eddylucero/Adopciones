@@ -33,7 +33,7 @@ class AuthController extends Controller
             $role = Auth::user()->role;
 
             if ($role === 'admin') {
-                return redirect()->route('mascotas.index')->with('success', 'Bienvenido Administrador.');
+                return redirect()->route('dashboard.index')->with('success', 'Bienvenido Administrador.');
             }
 
             return redirect()->route('home')->with('success', 'Bienvenido al portal de visitantes.');

@@ -7,14 +7,11 @@
     <div class="row justify-content-center">
       <div class="col-md-10 col-lg-7 p-4 py-5 ftco-animate">
         <div class="bg-light p-5 rounded shadow" style="background-color: rgba(255,255,255,0.95); border-radius: 20px;">
-          <h2 class="mb-4 text-center text-dark">
-            <span class="text-warning me-2"></span> Registro de Visitante
-          </h2>
-          <p class="text-center text-muted mb-4">Completa el siguiente formulario para unirte a nuestra comunidad y poder adoptar o apoyar a nuestros peludos</p>
+          <h2 class="mb-4 text-center text-dark">Registro de Visitante</h2>
+          <p class="text-center text-muted mb-4">Completa el formulario para unirte a nuestra comunidad.</p>
 
           <form action="{{ route('personas.store') }}" id="FormVisitante" method="post">
             @csrf
-
             <input type="hidden" name="origen" value="visitante">
             <div class="row g-3">
 
@@ -86,60 +83,19 @@ $.validator.setDefaults({ ignore: [] });
 
 $("#FormVisitante").validate({
   rules: {
-    nombre: {
-      required: true,
-      minlength: 2,
-      maxlength: 100,
-      pattern: /^[A-Za-zÁÉÍÓÚáéíóúÑñ\s]+$/
-    },
-    apellido: {
-      required: true,
-      minlength: 2,
-      maxlength: 100,
-      pattern: /^[A-Za-zÁÉÍÓÚáéíóúÑñ\s]+$/
-    },
-    cedula: {
-      required: true,
-      digits: true,
-      minlength: 10,
-      maxlength: 10
-    },
-    correo: {
-      required: true,
-      email: true
-    },
-    telefono: {
-      maxlength: 20
-    }
+    nombre: { required: true, minlength: 2, maxlength: 100, pattern: /^[A-Za-zÁÉÍÓÚáéíóúÑñ\s]+$/ },
+    apellido: { required: true, minlength: 2, maxlength: 100, pattern: /^[A-Za-zÁÉÍÓÚáéíóúÑñ\s]+$/ },
+    cedula: { required: true, digits: true, minlength: 10, maxlength: 10 },
+    correo: { required: true, email: true },
+    telefono: { maxlength: 20 }
   },
   messages: {
-    nombre: {
-      required: "El nombre es obligatorio",
-      minlength: "Debe tener al menos 2 caracteres",
-      maxlength: "Máximo 100 caracteres",
-      pattern: "Solo se permiten letras y espacios"
-    },
-    apellido: {
-      required: "El apellido es obligatorio",
-      minlength: "Debe tener al menos 2 caracteres",
-      maxlength: "Máximo 100 caracteres",
-      pattern: "Solo se permiten letras y espacios"
-    },
-    cedula: {
-      required: "La cédula es obligatoria",
-      digits: "Solo se permiten números",
-      minlength: "Debe tener exactamente 10 dígitos",
-      maxlength: "Debe tener exactamente 10 dígitos"
-    },
-    correo: {
-      required: "El correo es obligatorio",
-      email: "Ingrese un correo válido"
-    },
-    telefono: {
-      maxlength: "Máximo 20 caracteres"
-    }
+    nombre: { required: "El nombre es obligatorio", minlength: "Debe tener al menos 2 caracteres", maxlength: "Máximo 100 caracteres", pattern: "Solo se permiten letras y espacios" },
+    apellido: { required: "El apellido es obligatorio", minlength: "Debe tener al menos 2 caracteres", maxlength: "Máximo 100 caracteres", pattern: "Solo se permiten letras y espacios" },
+    cedula: { required: "La cédula es obligatoria", digits: "Solo se permiten números", minlength: "Debe tener exactamente 10 dígitos", maxlength: "Debe tener exactamente 10 dígitos" },
+    correo: { required: "El correo es obligatorio", email: "Ingrese un correo válido" },
+    telefono: { maxlength: "Máximo 20 caracteres" }
   }
 });
 </script>
-
 @endsection

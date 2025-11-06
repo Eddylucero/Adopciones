@@ -22,17 +22,33 @@ class AdopcionController extends Controller
         return view('adopciones.nuevaadopcion', compact('personas', 'mascotas'));
     }
 
+    public function adopvisi($id)
+    {
+        $mascota = Mascota::findOrFail($id);
+        return view('adopciones.adopvisi', compact('mascota'));
+    }
+
     public function store(Request $request)
     {
         $request->validate([
-            'persona_id' => 'required|exists:personas,id',
             'mascota_id' => 'required|exists:mascotas,id',
-            'fecha_adopcion' => 'required|date',
+            'persona_id' => 'nullable|exists:personas,id',
+            'fecha_adopcion' => 'nullable|date',
             'lugar_adopcion' => 'nullable|string|max:255',
             'observaciones' => 'nullable|string',
             'contrato' => 'nullable|mimes:pdf|max:2048',
+            'origen' => 'nullable|string',
+            'nombre' => 'nullable|string|max:255',
+            'correo' => 'nullable|email|max:255',
+            'telefono' => 'nullable|string|max:20',
+            'motivo' => 'nullable|string|max:500',
         ]);
 
+        // 🧡 Si proviene del formulario visitante
+        if ($request->input('origen') === 'visitante') {
+            return redirect('/')
+                ->with('success', 'Tu solicitud de adopción fue enviada correctamente. Nos pondremos en contacto contigo pronto.');
+        }
         $data = $request->only([
             'persona_id', 'mascota_id', 'fecha_adopcion', 'lugar_adopcion', 'observaciones'
         ]);
