@@ -1,4 +1,5 @@
-release: php artisan migrate --force && php artisan db:seed --force
+# Migraciones y seeders al deploy
+release: bash deploy.sh
 
-# Inicia el servidor web nativo de Railway (Apache/Nginx)
-web: php artisan config:clear && php artisan route:clear && php artisan view:clear && php artisan cache:clear && vendor/bin/heroku-php-apache2 public/
+# Servidor web
+web: php artisan serve --host=0.0.0.0 --port=$PORT
