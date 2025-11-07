@@ -16,18 +16,15 @@ class DashboardController extends Controller
         $totalPersonas = Persona::count();
         $totalAdopciones = Adopcion::count();
 
-        // 📊 Nuevos totales
         $adopcionesAprobadas = Adopcion::where('estado', 'Aprobada')->count();
         $adopcionesRechazadas = Adopcion::where('estado', 'Rechazada')->count();
 
-        // 🐾 Adopciones por especie
         $adopcionesPorEspecie = Mascota::select('especie', DB::raw('count(*) as total'))
             ->join('adopcions', 'adopcions.mascota_id', '=', 'mascotas.id')
             ->where('adopcions.estado', 'Aprobada')
             ->groupBy('especie')
             ->get();
 
-        // 📆 Adopciones por mes
         $adopcionesPorMes = Adopcion::selectRaw('EXTRACT(MONTH FROM fecha_adopcion) as mes, COUNT(*) as total')
             ->whereNotNull('fecha_adopcion')
             ->groupBy('mes')

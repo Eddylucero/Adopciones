@@ -127,8 +127,8 @@
           <div class="col-md-12 text-center">
             <p class="copyright">
               Copyright &copy;<script>document.write(new Date().getFullYear());</script> 
-              All rights reserved | Made with <i class="fa fa-heart" aria-hidden="true"></i> by 
-              <a href="https://colorlib.com" target="_blank">Colorlib.com</a>
+              | Hecho con <i class="fa fa-heart" aria-hidden="true"></i> por
+              <a href="#" target="_blank">Edddy - Diego - Anthony</a>
             </p>
           </div>
         </div>

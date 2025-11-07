@@ -73,10 +73,8 @@
   </div>
 </section>
 
-{{-- Scripts --}}
 <script>
 $(document).ready(function () {
-  // Inicializar fileinput con vista previa del contrato actual
   $("#contrato").fileinput({
     language: "es",
     allowedFileExtensions: ["pdf"],
@@ -111,7 +109,6 @@ $(document).ready(function () {
 
   $.validator.setDefaults({ ignore: [] });
 
-  // Validar formulario
   $("#FormAdopcionEdit").validate({
     rules: {
       fecha_adopcion: {

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Persona;
 use App\Models\Mascota;
+use App\Models\Adopcion;
 use Illuminate\Http\Request;
 
 class PersonaController extends Controller
@@ -14,21 +15,27 @@ class PersonaController extends Controller
         return view('personas.index', compact('personas'));
     }
 
+    // 🔹 Vista de adopciones del usuario autenticado
     public function nuevovisi()
     {
-
         $usuario = auth()->user();
 
         if (!$usuario) {
             return redirect()->route('login')->with('error', 'Debes iniciar sesión para ver tus adopciones.');
         }
-        $persona = \App\Models\Persona::where('correo', $usuario->email)->first();
 
-        if (!$persona) {
-            return view('personas.nuevovisi', ['mascotas' => collect(), 'persona' => null]);
-        }
+        $persona = Persona::firstOrCreate(
+            ['correo' => $usuario->email],
+            [
+                'nombre' => $usuario->name ?? 'Usuario',
+                'apellido' => '',
+                'cedula' => null,
+                'direccion' => null,
+                'telefono' => null,
+            ]
+        );
 
-        $adopciones = \App\Models\Adopcion::where('persona_id', $persona->id)
+        $adopciones = Adopcion::where('persona_id', $persona->id)
                         ->where('estado', 'Aprobada')
                         ->with('mascota')
                         ->get();

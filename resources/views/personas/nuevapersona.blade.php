@@ -40,7 +40,7 @@
               <div class="col-md-6">
                 <div class="form-group">
                   <label><b>Teléfono:</b></label>
-                  <input type="text" name="telefono" id="telefono" class="form-control rounded" placeholder="Teléfono (opcional)">
+                  <input type="text" name="telefono" id="telefono" class="form-control rounded" placeholder="Ejemplo: 0998765432" maxlength="10">
                 </div>
               </div>
 
@@ -81,8 +81,11 @@
   }
 </style>
 
-{{-- VALIDACIÓN --}}
 <script>
+$.validator.addMethod("telefonoEcuador", function(value, element) {
+  return this.optional(element) || /^09\d{8}$/.test(value);
+}, "Ingrese un número válido que empiece con 09 y tenga 10 dígitos");
+
 $.validator.setDefaults({ ignore: [] });
 
 $("#FormPersona").validate({
@@ -109,7 +112,8 @@ $("#FormPersona").validate({
       email: true
     },
     telefono: {
-      maxlength: 20
+      required: true,
+      telefonoEcuador: true
     }
   },
   messages: {
@@ -135,7 +139,8 @@ $("#FormPersona").validate({
       email: "Ingrese un correo válido"
     },
     telefono: {
-      maxlength: "Máximo 20 caracteres"
+      required: "El teléfono es obligatorio",
+      telefonoEcuador: "El número debe empezar con 09 y tener 10 dígitos"
     }
   }
 });

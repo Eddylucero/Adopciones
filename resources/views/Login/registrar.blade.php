@@ -12,26 +12,49 @@
 
   <style>
     body {
-      background-color: #fff8f5;
+      background: linear-gradient(to bottom right, #fff8f5, #f1f1f1);
+      font-family: 'Montserrat', sans-serif;
     }
 
     .card {
-      border-radius: 16px;
+      border-radius: 18px;
+      border: 1px solid #e0dcd2;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+      animation: fadeInUp 0.6s ease;
+    }
+
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
     }
 
     .btn-primary {
-      background-color: #ffb84d;
+      background-color: #6c9c7d;
       border: none;
       font-weight: bold;
+      border-radius: 50px;
+      transition: all 0.3s ease;
     }
 
     .btn-primary:hover {
-      background-color: #ffa31a;
+      background-color: #5b886b;
+      box-shadow: 0 4px 12px rgba(108, 156, 125, 0.3);
+    }
+
+    .form-control {
+      border-radius: 12px;
+      border: 1px solid #ccc;
+      transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .form-control:focus {
+      border-color: #6c9c7d;
+      box-shadow: 0 0 0 0.2rem rgba(108, 156, 125, 0.25);
     }
 
     .error {
       color: red;
-      font-family: 'Montserrat';
+      font-size: 14px;
     }
 
     .form-control.error {
@@ -60,7 +83,7 @@
 
     .spinner {
       border: 8px solid #f3f3f3;
-      border-top: 8px solid #ffb84d;
+      border-top: 8px solid #6c9c7d;
       border-radius: 50%;
       width: 80px;
       height: 80px;
@@ -80,10 +103,10 @@
   </div>
 
   <div class="page-wrapper min-vh-100 d-flex align-items-center justify-content-center">
-    <div class="card shadow p-4" style="width: 460px;">
+    <div class="card shadow p-5" style="width: 540px;">
       <div class="card-body">
         <div class="text-center mb-4">
-          <h4 class="mt-3 fw-bold text-dark">Crear Cuenta</h4>
+          <h4 class="mt-2 fw-bold text-dark">Crear Cuenta</h4>
           <p class="text-muted">Únete al sistema de adopciones y ayuda a nuestros peludos</p>
         </div>
 
@@ -104,22 +127,22 @@
           @csrf
 
           <div class="mb-3">
-            <label class="form-label"><i class="fa-solid fa-user me-2 text-warning"></i>Nombre completo</label>
+            <label class="form-label"><i class="fa-solid fa-user me-2 text-success"></i>Nombre completo</label>
             <input type="text" name="name" class="form-control" placeholder="Tu nombre completo">
           </div>
 
           <div class="mb-3">
-            <label class="form-label"><i class="fa-solid fa-envelope me-2 text-warning"></i>Correo electrónico</label>
+            <label class="form-label"><i class="fa-solid fa-envelope me-2 text-success"></i>Correo electrónico</label>
             <input type="email" name="email" class="form-control" placeholder="usuario@correo.com">
           </div>
 
           <div class="mb-3">
-            <label class="form-label"><i class="fa-solid fa-lock me-2 text-warning"></i>Contraseña</label>
+            <label class="form-label"><i class="fa-solid fa-lock me-2 text-success"></i>Contraseña</label>
             <input type="password" name="password" class="form-control" placeholder="Mínimo 6 caracteres">
           </div>
 
           <div class="mb-4">
-            <label class="form-label"><i class="fa-solid fa-key me-2 text-warning"></i>Confirmar contraseña</label>
+            <label class="form-label"><i class="fa-solid fa-key me-2 text-success"></i>Confirmar contraseña</label>
             <input type="password" name="password_confirmation" class="form-control" placeholder="Repite tu contraseña" required>
           </div>
 
@@ -129,7 +152,7 @@
 
           <div class="text-center">
             <p class="mb-0">¿Ya tienes cuenta?
-              <a class="text-primary fw-bold" href="{{ route('login') }}">Inicia sesión</a>
+              <a class="text-success fw-bold" href="{{ route('login') }}">Inicia sesión</a>
             </p>
           </div>
         </form>

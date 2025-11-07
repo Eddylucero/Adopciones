@@ -26,6 +26,8 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 Route::get('/register', [AuthController::class, 'showRegisterForm'])->name('register');
 Route::post('/register', [AuthController::class, 'register'])->name('register.post');
 
+Route::post('/adopvisi/{id}', [AdopcionController::class, 'adopvisiStore'])->name('adopvisi.store');
+
 // 🔹 Área protegida (usuarios autenticados)
 Route::middleware('auth')->group(function () {
     Route::get('/home', [HomeController::class, 'index'])->name('home');
