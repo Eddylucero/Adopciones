@@ -154,6 +154,7 @@ class AdopcionController extends Controller
             'correo' => 'required|email|max:255',
             'cedula' => 'required|string|size:10',
             'telefono' => 'required|string|max:20',
+            'direccion' => 'required|string|max:255',
             'motivo' => 'nullable|string|max:500',
         ]);
 
@@ -170,16 +171,17 @@ class AdopcionController extends Controller
                 'cedula' => $request->cedula,
                 'direccion' => null,
                 'telefono' => $request->telefono,
+                'direccion' => $request->direccion,
                 'correo' => $request->correo,
             ]);
         }
 
-        // Crear adopción pendiente
         Adopcion::create([
             'persona_id' => $persona->id,
             'mascota_id' => $mascota->id,
             'estado' => 'Pendiente',
             'fecha_adopcion' => now(),
+            'lugar_adopcion' => 'Sistema',
             'observaciones' => $request->motivo,
         ]);
 

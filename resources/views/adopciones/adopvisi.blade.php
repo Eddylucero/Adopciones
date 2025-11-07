@@ -47,6 +47,14 @@
               </div>
 
               <div class="col-md-12">
+                <label><b>Dirección:</b></label>
+                <input type="text" name="direccion" class="form-control rounded"
+                       placeholder="Tu dirección de residencia"
+                       value="{{ $persona && $persona->direccion ? $persona->direccion : '' }}"
+                       @if($persona && $persona->direccion) readonly @endif>
+              </div>
+
+              <div class="col-md-12">
                 <label><b>Motivo de adopción:</b></label>
                 <textarea name="motivo" class="form-control rounded" rows="4"
                           placeholder="¿Por qué deseas adoptar esta mascota?"></textarea>
@@ -77,6 +85,7 @@ $(document).ready(function () {
       correo: { required: true, email: true },
       cedula: { required: true, digits: true, minlength: 10, maxlength: 10 },
       telefono: { required: true, digits: true, minlength: 7, maxlength: 15 },
+      direccion: { required: true, minlength: 5, maxlength: 255 },
       motivo: { required: true, minlength: 10 }
     },
     messages: {
@@ -84,6 +93,7 @@ $(document).ready(function () {
       correo: { required: "Ingrese su correo" },
       cedula: { required: "Ingrese su cédula" },
       telefono: { required: "Ingrese su teléfono" },
+      direccion: { required: "Ingrese su dirección" },
       motivo: { required: "Explique por qué desea adoptar" }
     }
   });

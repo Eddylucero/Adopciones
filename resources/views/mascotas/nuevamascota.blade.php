@@ -128,7 +128,8 @@ $("#FormMascota").validate({
     estado: { required: true },
     sexo: { required: true },
     edad: { number: true, min: 1, max: 10, required: true },
-    foto: { required: true, extension: "jpg|jpeg|png|gif" }
+    foto: { required: true, extension: "jpg|jpeg|png|gif" },
+    descripcion: { required: true, minlength: 5, maxlength: 500 }
   },
   messages: {
     nombre: {
@@ -149,7 +150,11 @@ $("#FormMascota").validate({
     foto: {
       required: "Debe subir una imagen de la mascota",
       extension: "Formato permitido: jpg, jpeg, png o gif"
-    }
+    },
+    descripcion: {
+      required: "Debe escribir una descripción",
+      minlength: "La descripción debe tener al menos 5 caracteres",
+      maxlength: "La descripción no puede superar los 500 caracteres"
   }
 });
 

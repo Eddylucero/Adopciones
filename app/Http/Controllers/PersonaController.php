@@ -15,7 +15,6 @@ class PersonaController extends Controller
         return view('personas.index', compact('personas'));
     }
 
-    // 🔹 Vista de adopciones del usuario autenticado
     public function nuevovisi()
     {
         $usuario = auth()->user();
@@ -24,16 +23,12 @@ class PersonaController extends Controller
             return redirect()->route('login')->with('error', 'Debes iniciar sesión para ver tus adopciones.');
         }
 
-        $persona = Persona::firstOrCreate(
-            ['correo' => $usuario->email],
-            [
-                'nombre' => $usuario->name ?? 'Usuario',
-                'apellido' => '',
-                'cedula' => null,
-                'direccion' => null,
-                'telefono' => null,
-            ]
-        );
+        $persona = Persona::where('correo', $usuario->email)->first();
+
+        if (!$persona) {
+            return redirect('/home')
+                ->with('error', 'Aún no tienes una cédula registrada. Debes realizar una adopción primero.');
+        }
 
         $adopciones = Adopcion::where('persona_id', $persona->id)
                         ->where('estado', 'Aprobada')
@@ -44,6 +39,7 @@ class PersonaController extends Controller
 
         return view('personas.nuevovisi', compact('mascotas', 'persona'));
     }
+
 
     public function create()
     {

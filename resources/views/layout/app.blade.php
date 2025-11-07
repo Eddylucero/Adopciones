@@ -142,7 +142,7 @@
       </svg>
     </div>
     
-    <script src="{{ asset('pets/js/jquery.min.js') }}"></script>
+    <!-- <script src="{{ asset('pets/js/jquery.min.js') }}"></script> -->
     <script src="{{ asset('pets/js/jquery-migrate-3.0.1.min.js') }}"></script>
     <script src="{{ asset('pets/js/popper.min.js') }}"></script>
     <script src="{{ asset('pets/js/bootstrap.min.js') }}"></script> <script src="{{ asset('pets/js/jquery.easing.1.3.js') }}"></script>
