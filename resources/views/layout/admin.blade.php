@@ -87,6 +87,14 @@
                 <span class="hide-menu">Adopción</span>
               </a>
             </li>
+
+            <li class="sidebar-item">
+              <a class="sidebar-link primary-hover-bg" href="{{ route('cirugias.index') }}" aria-expanded="false">
+                <iconify-icon icon="solar:syringe-line-duotone"></iconify-icon>
+                <span class="hide-menu">Cirugías</span>
+              </a>
+            </li>
+
           </ul>
         </nav>
         </div>

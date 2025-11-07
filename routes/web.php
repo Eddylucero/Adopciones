@@ -8,17 +8,17 @@ use App\Http\Controllers\PersonaController;
 use App\Http\Controllers\AdopcionController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\CirugiaController;
 
-// 🔹 Redirige según autenticación
+
 Route::get('/', function () {
     return Auth::check() ? redirect()->route('home') : redirect()->route('login');
 });
 
-// 🔹 Rutas públicas (visitantes)
+
 Route::get('/personas/nuevovisi', [PersonaController::class, 'nuevovisi'])->name('personas.nuevovisi');
 Route::get('/adopvisi/{id}', [AdopcionController::class, 'adopvisi'])->name('adopvisi');
 
-// 🔹 Autenticación
 Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
 Route::post('/login', [AuthController::class, 'login'])->name('login.post');
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
@@ -28,14 +28,13 @@ Route::post('/register', [AuthController::class, 'register'])->name('register.po
 
 Route::post('/adopvisi/{id}', [AdopcionController::class, 'adopvisiStore'])->name('adopvisi.store');
 
-// 🔹 Área protegida (usuarios autenticados)
+
 Route::middleware('auth')->group(function () {
     Route::get('/home', [HomeController::class, 'index'])->name('home');
 
-    // 🔹 Área de administrador
     Route::middleware('admin')->group(function () {
 
-        // 🔹 Rutas resource con nombres únicos explícitos
+        // Personas
         Route::resource('personas', PersonaController::class)
             ->names([
                 'index' => 'personas.index',
@@ -69,6 +68,17 @@ Route::middleware('auth')->group(function () {
                 'destroy' => 'adopciones.destroy',
             ]);
 
+        Route::resource('cirugias', CirugiaController::class)
+            ->names([
+                'index' => 'cirugias.index',
+                'create' => 'cirugias.create',
+                'store' => 'cirugias.store',
+                'show' => 'cirugias.show',
+                'edit' => 'cirugias.edit',
+                'update' => 'cirugias.update',
+                'destroy' => 'cirugias.destroy',
+            ]);
+
         Route::resource('dashboard', DashboardController::class)
             ->names([
                 'index' => 'dashboard.index',
@@ -80,7 +90,6 @@ Route::middleware('auth')->group(function () {
                 'destroy' => 'dashboard.destroy',
             ]);
 
-        // 🔹 Rutas personalizadas para adopciones
         Route::post('/adopciones/{id}/aprobar', [AdopcionController::class, 'aprobar'])
             ->name('adopciones.aprobar');
         Route::post('/adopciones/{id}/rechazar', [AdopcionController::class, 'rechazar'])

@@ -161,15 +161,24 @@
   </div>
 
   <script>
+    $.validator.addMethod("soloLetras", function(value, element) {
+      return this.optional(element) || /^[a-zA-ZÀ-ÿ\s]+$/.test(value);
+    }, "Solo se permiten letras y espacios");
+
     $("#RegisterForm").validate({
       rules: {
-        name: { required: true, minlength: 3 },
+        name: { required: true, minlength: 3, maxlength: 25, soloLetras: true },
         email: { required: true, email: true },
         password: { required: true, minlength: 6 },
         password_confirmation: { required: true, equalTo: "[name='password']" }
       },
       messages: {
-        name: { required: "El nombre es obligatorio", minlength: "Debe tener al menos 3 caracteres" },
+        name: {
+          required: "El nombre es obligatorio",
+          minlength: "Debe tener al menos 3 caracteres",
+          maxlength: "No más de 25 caracteres",
+          soloLetras: "Solo se permiten letras y espacios"
+        },
         email: { required: "El correo es obligatorio", email: "Ingrese un correo válido" },
         password: { required: "La contraseña es obligatoria", minlength: "Debe tener al menos 6 caracteres" },
         password_confirmation: { required: "Debe confirmar la contraseña", equalTo: "Las contraseñas no coinciden" }

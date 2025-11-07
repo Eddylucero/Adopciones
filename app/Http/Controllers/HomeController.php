@@ -13,9 +13,13 @@ class HomeController extends Controller
      */
     public function index()
     {
-        $mascotas = Mascota::where('estado', 'Disponible')->take(6)->get();
+        $mascotas = Mascota::with('cirugias')
+            ->where('estado', 'Disponible')
+            ->get();
+
         return view('home.home', compact('mascotas'));
     }
+
 
     /**
      * Show the form for creating a new resource.

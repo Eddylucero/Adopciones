@@ -26,4 +26,10 @@ class Mascota extends Model
     {
         return $this->hasMany(Adopcion::class);
     }
+
+    public function cirugias()
+    {
+        return $this->hasMany(Cirugia::class);
+    }
+
 }

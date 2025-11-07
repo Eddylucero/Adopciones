@@ -18,15 +18,20 @@
                     <div class="col-lg-4 col-md-6 ftco-animate">
                         <div class="card border-0 shadow-hover h-100" style="transition: all 0.3s ease;">
                             <img src="{{ asset($mascota->foto) }}" 
-                                 class="card-img-top" 
-                                 style="height: 280px; object-fit: cover;" 
-                                 alt="{{ $mascota->nombre }}">
+                                class="card-img-top" 
+                                style="height: 280px; object-fit: cover;" 
+                                alt="{{ $mascota->nombre }}">
                             
                             <div class="card-body d-flex flex-column">
                                 <h5 class="card-title fw-bold text-dark mb-2">{{ $mascota->nombre }}</h5>
                                 <p class="text-primary mb-2 fw-semibold">
                                     <i class="fas fa-paw me-2"></i>{{ $mascota->especie }} • {{ $mascota->raza ?? 'Mixto' }}
                                 </p>
+
+                                <p class="cirugia-info mb-2 {{ $mascota->cirugias->isNotEmpty() ? 'text-success' : 'text-secondary' }}">
+                                    {{ $mascota->cirugias->isNotEmpty() ? 'Con cirugía' : 'Sin cirugía' }}
+                                </p>
+
                                 <p class="card-text text-muted flex-grow-1">
                                     {{ Str::limit($mascota->descripcion, 90, '...') }}
                                 </p>
@@ -34,11 +39,11 @@
                                 <div class="mt-auto pt-3">
                                     @if ($mascota->estado === 'Disponible')
                                         <a href="{{ route('adopvisi', $mascota->id) }}" 
-                                           class="btn btn-outline-success rounded-pill w-100 py-2">
+                                        class="btn btn-outline-success rounded-pill w-100 py-2">
                                             <i class="fa fa-paw me-2"></i> Adoptar
                                         </a>
                                     @else
-                                        <span class="badge bg-secondary rounded-pill w-100 py-2 text-center">
+                                        <span class="text-muted fw-semibold d-block text-center py-2 rounded-pill border">
                                             Adoptado
                                         </span>
                                     @endif
@@ -80,45 +85,50 @@
     .bg-gradient-primary {
         background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
     }
-    
+
     .shadow-hover:hover {
         transform: translateY(-5px);
         box-shadow: 0 12px 25px rgba(0,0,0,0.15) !important;
     }
-    
+
     .separator {
         width: 80px;
         height: 4px;
         border-radius: 2px;
     }
-    
+
     .card-img-top {
         transition: transform 0.3s ease;
     }
-    
+
     .card:hover .card-img-top {
         transform: scale(1.05);
     }
-    
+
     .btn {
         transition: all 0.3s ease;
         font-weight: 600;
     }
-    
+
     .empty-state {
         padding: 3rem 1rem;
     }
-    
+
     .text-primary {
         color: #667eea !important;
     }
-    
+
     .fw-semibold {
         font-weight: 600;
     }
-    
+
     .lead {
         font-size: 1.2rem;
+    }
+
+    .cirugia-info {
+        font-weight: 600;
+        font-size: 0.95rem;
     }
 </style>
 @endsection
