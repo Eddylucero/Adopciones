@@ -27,7 +27,7 @@ class PersonaController extends Controller
 
         if (!$persona) {
             return redirect('/home')
-                ->with('error', 'Aún no tienes una cédula registrada. Debes realizar una adopción primero.');
+                ->with('warning', 'Aún no tienes mascotas adoptadas. Regístrate para ver tus mascotas.');
         }
 
         $adopciones = Adopcion::where('persona_id', $persona->id)

@@ -190,6 +190,17 @@
         });
     </script>
     @endif
+
+    @if (session('warning'))
+    <script>
+        Swal.fire({
+            title: '¡INFORMACIÓN!',
+            text: '{{ session('warning') }}',
+            icon: 'info',
+            confirmButtonText: 'OK'
+        });
+    </script>
+    @endif
     
     <script>
     document.addEventListener('DOMContentLoaded', function () {
